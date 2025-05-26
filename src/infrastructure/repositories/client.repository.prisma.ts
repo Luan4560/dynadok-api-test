@@ -1,6 +1,6 @@
 import { Client } from '#domain/client/entity/client.entity.js';
 import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
-import { PrismaClient } from '#generated/prisma/index.js';
+import { PrismaClient } from '../../../generated/prisma/index.js';
 
 export class ClientRepositoryPrisma implements ClientGateway {
   private constructor(private readonly prismaClient: PrismaClient) {}
