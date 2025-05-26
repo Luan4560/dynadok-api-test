@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Client } from '#domain/client/entity/client.entity.js';
 import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
+import { setRedis } from '#infrastructure/cache/redisConfig.js';
 import { Usecase } from '#usecases/usecase.js';
 
 export interface CreateClientInputDto {
@@ -29,6 +31,8 @@ export class CreateClientUsecase
     const client = Client.create(name, email, phone);
 
     await this.clientGateway.save(client);
+
+    await setRedis(`client-${client.id}`, JSON.stringify(client));
 
     const output = this.presentOutput(client);
 

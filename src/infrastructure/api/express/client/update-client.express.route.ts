@@ -34,8 +34,6 @@ export class UpdateClientRoute implements Route {
         phone,
       };
 
-      console.log(input);
-
       const output = await this.updateClientUseService.execute(input);
 
       const responseBody = this.present(output);

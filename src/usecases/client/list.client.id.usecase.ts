@@ -1,4 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
+import { getRedis, setRedis } from '#infrastructure/cache/redisConfig.js';
+
 import { Usecase } from '#usecases/usecase.js';
 import { Client } from 'generated/prisma/index.js';
 
@@ -23,15 +28,36 @@ export class ListClientByIdUsecase
   }
 
   public async execute({ id }: ListClientByIdInputDto): Promise<ListClientByIdOutputDto> {
-    const client = await this.clientGateway.findById(id);
+    try {
+      const clientRedis = await getRedis(`client-${id}`);
+      const clientRedisParsed = clientRedis
+        ? (JSON.parse(clientRedis as string) as ListClientByIdOutputDto)
+        : null;
 
-    if (!client) {
-      throw new Error('Client not found');
+      if (clientRedisParsed) {
+        return clientRedisParsed;
+      }
+
+      const client = await this.clientGateway.findById(id);
+
+      if (!client) {
+        throw new Error('Client not found');
+      }
+
+      const output = this.presentOutput(client);
+
+      await setRedis(`client-${id}`, JSON.stringify(output));
+
+      return output;
+    } catch {
+      const client = await this.clientGateway.findById(id);
+
+      if (!client) {
+        throw new Error('Client not found');
+      }
+
+      return this.presentOutput(client);
     }
-
-    const output = this.presentOutput(client);
-
-    return output;
   }
 
   private presentOutput(client: Client): ListClientByIdOutputDto {

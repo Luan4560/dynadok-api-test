@@ -8,6 +8,7 @@ export default tseslint.config(
   {
     ignores: ['**/*.js'],
   },
+
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -20,13 +21,18 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.test.ts', '**/*.spec.ts'],
+    files: ['**/*.test.ts', '**/*.spec.ts', '**/*.ts'],
     plugins: {
       vitest,
     },
     rules: {
       ...vitest.configs.recommended.rules,
       '@typescript-eslint/unbound-method': 'off',
+      'eslint-disable @typescript-eslint/no-unsafe-return': 'off',
+      ' eslint-disable @typescript-eslint/no-unsafe-member-access': 'off',
+      'eslint-disable @typescript-eslint/no-unsafe-argument': 'off',
+      'eslint-disable @typescript-eslint/no-unsafe-call': 'off',
+      'eslint-disable @typescript-eslint/no-unsafe-assignment': 'off',
     },
   },
 );
