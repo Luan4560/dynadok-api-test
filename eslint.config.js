@@ -6,7 +6,7 @@ import vitest from '@vitest/eslint-plugin';
 
 export default tseslint.config(
   {
-    ignores: ['**/*.js'],
+    ignores: ['**/*.js', 'generated/**/*', 'node_modules/**/*', 'dist/**/*'],
   },
 
   eslint.configs.recommended,
@@ -28,11 +28,16 @@ export default tseslint.config(
     rules: {
       ...vitest.configs.recommended.rules,
       '@typescript-eslint/unbound-method': 'off',
-      'eslint-disable @typescript-eslint/no-unsafe-return': 'off',
-      ' eslint-disable @typescript-eslint/no-unsafe-member-access': 'off',
-      'eslint-disable @typescript-eslint/no-unsafe-argument': 'off',
-      'eslint-disable @typescript-eslint/no-unsafe-call': 'off',
-      'eslint-disable @typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/member-ordering': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'error',
+      '@typescript-eslint/no-misused-promises': 'error',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
     },
   },
 );

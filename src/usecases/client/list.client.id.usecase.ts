@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import { ClientGateway } from '../../domain/client/gateway/client.gateway.js';
 import { getRedis } from '../../infrastructure/cache/redisConfig.js';
 import { Usecase } from '../usecase.js';
@@ -28,9 +25,7 @@ export class ListClientByIdUsecase
 
   public async execute({ id }: ListClientByIdInputDto): Promise<ListClientByIdOutputDto> {
     const clientRedis = await getRedis(`client-${id}`);
-    const clientRedisParsed = clientRedis
-      ? (JSON.parse(clientRedis as string) as ListClientByIdOutputDto)
-      : null;
+    const clientRedisParsed = clientRedis ? JSON.parse(clientRedis) : null;
 
     const client = await this.clientGateway.findById(id);
     if (!client) {

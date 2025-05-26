@@ -1,9 +1,8 @@
-import { promisify } from 'util';
 import { Redis } from 'ioredis';
 
-const redisClient = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+const redisClient = new Redis(process.env.REDIS_URL ?? 'redis://localhost:6379');
 
-redisClient.on('error', err => {
+redisClient.on('error', (err: Error) => {
   console.error('Redis Client Error:', err);
 });
 
@@ -17,8 +16,7 @@ redisClient.on('ready', () => {
 
 async function getRedis(value: string) {
   try {
-    const syncRedisGet = promisify(redisClient.get).bind(redisClient);
-    return await syncRedisGet(value);
+    return await redisClient.get(value);
   } catch (error) {
     console.error('Error getting value from Redis:', error);
     return null;
