@@ -1,12 +1,28 @@
-import express from 'express';
-const app = express();
+import 'dotenv/config';
+import { ApiExpress } from '#infrastructure/api/express/api.express.js';
+import { CreateClientRoute } from '#infrastructure/api/express/client/create-client.express.route.js';
+import { ListClientRoute } from '#infrastructure/api/express/client/list-client.express.route.js';
+import { ClientRepositoryPrisma } from '#infrastructure/repositories/client.repository.prisma.js';
+import { CreateClientUsecase } from '#usecases/client/create.client.usecase.js';
+import { ListClientUsecase } from '#usecases/client/list.client.usecase.js';
+import { PrismaClient } from './generated/prisma/index.js';
 
-const port = Number(process.env.PORT) || 8080;
+const prisma = new PrismaClient();
 
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+function main() {
+  const repository = ClientRepositoryPrisma.create(prisma);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${String(port)}`);
-});
+  const createClientUsecase = CreateClientUsecase.create(repository);
+  const listClientUsecase = ListClientUsecase.create(repository);
+
+  const createClient = CreateClientRoute.create(createClientUsecase);
+  const listClient = ListClientRoute.create(listClientUsecase);
+
+  const port = 8080;
+
+  const api = ApiExpress.create([createClient, listClient]);
+
+  api.start(port).catch(console.error);
+}
+
+main();

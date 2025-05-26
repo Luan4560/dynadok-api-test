@@ -1,16 +1,19 @@
-version: '3.8'
+networks:
+  minha_rede:
+    driver: bridge
 
 services:
   mongo:
-    image: mongo:7.0
+    build: ./mongodb_rs
+    restart: always
+    networks:
+      - minha_rede
+    container_name: mongo
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=mongo
+      - MONGO_REPLICA_HOST=mongo
+      - MONGO_REPLICA_PORT=27017
     ports:
-      - 27017:27017
-    volumes:
-      - mongoapi:/data/db
-
-volumes:
-  mongoapi:
-    driver: local
+      - '27017:27017'

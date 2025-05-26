@@ -15,3 +15,7 @@ npm run format: runs Prettier throughout all your files and applies formatting.
 npm run format:check: runs Prettier throughout all your files and shows which files have yet to be formatted.
 
 npm run test: runs tests on the project, which we won’t cover in this tutorial, but are typically implemented with thejest package.
+
+## TODO
+
+Delete cliente []

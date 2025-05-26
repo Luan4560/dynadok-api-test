@@ -1,10 +1,11 @@
 {
-  "printWidth": 70,
+  "printWidth": 90,
   "tabWidth": 2,
   "singleQuote": true,
   "trailingComma": "all",
-  "arrowParens": "always",
   "semi": true,
   "bracketSpacing": true,
-  "endOfLine": "lf"
+  "organizeImports": false,
+  "arrowParens": "avoid",
+  "proseWrap": "preserve"
 }

@@ -14,3 +14,11 @@
 
 # Test coverage
 /coverage
+
+# Excalidraw
+flow.excalidraw
+/generated/prisma
+
+/generated/prisma
+
+/generated/prisma
