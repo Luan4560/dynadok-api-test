@@ -1,5 +1,6 @@
 import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
 import { Usecase } from '#usecases/usecase.js';
+import { deleteRedis } from '#infrastructure/cache/redisConfig.js';
 
 export interface DeleteClientInputDto {
   id: string;
@@ -20,6 +21,7 @@ export class DeleteClientUsecase
 
   public async execute({ id }: DeleteClientInputDto): Promise<DeleteClientOutputDto> {
     await this.clientGateway.delete(id);
+    await deleteRedis(`client-${id}`);
 
     const output = this.presentOutput(id);
 

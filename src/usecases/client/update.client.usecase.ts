@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Client } from '#domain/client/entity/client.entity.js';
 import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
 import { Usecase } from '#usecases/usecase.js';
+import { setRedis } from '#infrastructure/cache/redisConfig.js';
 
 export interface UpdateClientInputDto {
   id: string;
@@ -17,7 +19,7 @@ export interface UpdateClientOutputDto {
 }
 
 export class UpdateClientUsecase
-  implements Usecase<UpdateClientOutputDto, UpdateClientInputDto>
+  implements Usecase<UpdateClientInputDto, UpdateClientOutputDto>
 {
   private constructor(private readonly clientGateway: ClientGateway) {}
 
@@ -31,28 +33,41 @@ export class UpdateClientUsecase
     email,
     phone,
   }: UpdateClientInputDto): Promise<UpdateClientOutputDto> {
-    const client = Client.with({
-      id,
-      name,
-      email,
-      phone,
+    const client = await this.clientGateway.findById(id);
+
+    if (!client) {
+      throw new Error('Client not found');
+    }
+
+    const clientToUpdate = Client.with({ id, name, email, phone });
+    const updatedClient = await this.clientGateway.update(clientToUpdate);
+
+    if (!updatedClient) {
+      throw new Error('Failed to update client');
+    }
+
+    try {
+      await setRedis(`client-${id}`, JSON.stringify(updatedClient));
+    } catch (error: unknown) {
+      console.error('Failed to update cache:', error);
+    }
+
+    const output = this.presentOutput({
+      id: updatedClient.id,
+      name: updatedClient.name,
+      email: updatedClient.email,
+      phone: updatedClient.phone,
     });
-
-    await this.clientGateway.update(client);
-
-    const output = this.presentOutput(client);
 
     return output;
   }
 
-  private presentOutput(client: Client): UpdateClientOutputDto {
-    const output: UpdateClientOutputDto = {
+  private presentOutput(client: UpdateClientOutputDto): UpdateClientOutputDto {
+    return {
       id: client.id,
       name: client.name,
       email: client.email,
       phone: client.phone,
     };
-
-    return output;
   }
 }

@@ -1,11 +1,8 @@
 import { promisify } from 'util';
 import { Redis } from 'ioredis';
 
-// Redis configuration
-
 const redisClient = new Redis();
 
-// Handle Redis connection events
 redisClient.on('error', err => {
   console.error('Redis Client Error:', err);
 });
@@ -14,14 +11,38 @@ redisClient.on('connect', () => {
   console.log('Redis Client Connected');
 });
 
-function getRedis(value: string) {
-  const syncRedisGet = promisify(redisClient.get).bind(redisClient);
-  return syncRedisGet(value);
+redisClient.on('ready', () => {
+  console.log('Redis Client Ready');
+});
+
+async function getRedis(value: string) {
+  try {
+    const syncRedisGet = promisify(redisClient.get).bind(redisClient);
+    return await syncRedisGet(value);
+  } catch (error) {
+    console.error('Error getting value from Redis:', error);
+    return null;
+  }
 }
 
-function setRedis(key: string, value: string) {
-  const syncRedisSet = promisify(redisClient.set).bind(redisClient);
-  return syncRedisSet(key, value);
+async function setRedis(key: string, value: string, expireTime?: number) {
+  try {
+    if (expireTime) {
+      await redisClient.setex(key, expireTime, value);
+    } else {
+      await redisClient.set(key, value);
+    }
+  } catch (error) {
+    console.error('Error setting value in Redis:', error);
+  }
 }
 
-export { redisClient, getRedis, setRedis };
+async function deleteRedis(key: string) {
+  try {
+    await redisClient.del(key);
+  } catch (error) {
+    console.error('Error deleting value from Redis:', error);
+  }
+}
+
+export { redisClient, getRedis, setRedis, deleteRedis };
