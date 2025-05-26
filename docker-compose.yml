@@ -1,3 +1,4 @@
+# docker run --rm -d --hostname my-rabbit --name crud-rabbit -p 5672:5672 -p 8080:15672 rabbitmq:3-management
 services:
   redis:
     image: redis:latest
@@ -9,16 +10,31 @@ services:
     networks:
       - app-network
 
-  app:
-    build: .
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: my-rabbit
     ports:
-      - '8080:8080'
-    environment:
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      - redis
+      - '5672:5672' # AMQP protocol port
+      - '15672:15672' # Management UI port
     networks:
       - app-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    environment:
+      - NODE_ENV=development
+      - REDIS_URL=redis://redis:6379
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      - redis
+      - rabbitmq
+    networks:
+      - app-network
+    command: npm start
 
 volumes:
   redis_data:

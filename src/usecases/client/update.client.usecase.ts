@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { Client } from '#domain/client/entity/client.entity.js';
-import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
-import { Usecase } from '#usecases/usecase.js';
-import { setRedis } from '#infrastructure/cache/redisConfig.js';
+import { Client } from '../../domain/client/entity/client.entity.js';
+import { ClientGateway } from '../../domain/client/gateway/client.gateway.js';
+import { Usecase } from '../usecase.js';
+import { setRedis } from '../../infrastructure/cache/redisConfig.js';
 
 export interface UpdateClientInputDto {
   id: string;

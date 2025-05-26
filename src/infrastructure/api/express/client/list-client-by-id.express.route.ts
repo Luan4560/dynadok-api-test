@@ -1,7 +1,5 @@
-import {
-  ListClientByIdOutputDto,
-  ListClientByIdUsecase,
-} from '#usecases/client/list.client.id.usecase.js';
+import { ListClientByIdUsecase } from '../../../../usecases/client/list.client.id.usecase.js';
+import { ListClientByIdOutputDto } from '../../../../usecases/client/list.client.id.usecase.js';
 import { Route, HttpMethod } from '../routes/route.js';
 import { Request, Response } from 'express';
 

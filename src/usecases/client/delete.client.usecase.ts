@@ -1,6 +1,7 @@
-import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
-import { Usecase } from '#usecases/usecase.js';
-import { deleteRedis } from '#infrastructure/cache/redisConfig.js';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { ClientGateway } from '../../domain/client/gateway/client.gateway.js';
+import { Usecase } from '../usecase.js';
+import { deleteRedis } from '../../infrastructure/cache/redisConfig.js';
 
 export interface DeleteClientInputDto {
   id: string;

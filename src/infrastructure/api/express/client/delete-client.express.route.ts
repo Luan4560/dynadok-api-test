@@ -1,7 +1,7 @@
 import {
   DeleteClientInputDto,
   DeleteClientUsecase,
-} from '#usecases/client/delete.client.usecase.js';
+} from '../../../../usecases/client/delete.client.usecase.js';
 import { HttpMethod, Route } from '../routes/route.js';
 import { Request, Response } from 'express';
 

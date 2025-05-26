@@ -1,8 +1,8 @@
 import {
-  UpdateClientUsecase,
   UpdateClientInputDto,
   UpdateClientOutputDto,
-} from '#usecases/client/update.client.usecase.js';
+  UpdateClientUsecase,
+} from '../../../../usecases/client/update.client.usecase.js';
 import { Route } from '../routes/route.js';
 import { Request, Response } from 'express';
 import { HttpMethod } from '../routes/route.js';

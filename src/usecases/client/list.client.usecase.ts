@@ -1,6 +1,6 @@
-import { Client } from '#domain/client/entity/client.entity.js';
-import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
-import { Usecase } from '#usecases/usecase.js';
+import { Client } from '../../domain/client/entity/client.entity.js';
+import { ClientGateway } from '../../domain/client/gateway/client.gateway.js';
+import { Usecase } from '../usecase.js';
 
 export interface ListClientOutputDto {
   clients: {

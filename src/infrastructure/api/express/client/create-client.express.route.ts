@@ -1,7 +1,7 @@
 import {
   CreateClientInputDto,
   CreateClientUsecase,
-} from '#usecases/client/create.client.usecase.js';
+} from '../../../../usecases/client/create.client.usecase.js';
 import { Request, Response } from 'express';
 import { HttpMethod, Route } from '../routes/route.js';
 

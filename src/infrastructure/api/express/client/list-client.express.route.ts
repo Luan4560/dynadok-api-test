@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import {
   ListClientOutputDto,
   ListClientUsecase,
-} from '#usecases/client/list.client.usecase.js';
+} from '../../../../usecases/client/list.client.usecase.js';
 import { HttpMethod, Route } from '../routes/route.js';
 
 export class ListClientRoute implements Route {

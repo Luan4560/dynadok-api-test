@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { ClientGateway } from '#domain/client/gateway/client.gateway.js';
-import { getRedis } from '#infrastructure/cache/redisConfig.js';
-
-import { Usecase } from '#usecases/usecase.js';
-import { Client } from 'generated/prisma/index.js';
+import { ClientGateway } from '../../domain/client/gateway/client.gateway.js';
+import { getRedis } from '../../infrastructure/cache/redisConfig.js';
+import { Usecase } from '../usecase.js';
+import { Client } from '../../../generated/prisma/index.js';
 
 export interface ListClientByIdInputDto {
   id: string;
